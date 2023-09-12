@@ -6,11 +6,8 @@
 //
 
 import SwiftUI
-import SendbirdUIKit
 import SendbirdChatSDK
-import SwiftUI
 import UIKit
-import SwiftUI
 
 struct ContentView: View {
     @State var text = ""
@@ -44,9 +41,10 @@ struct ContentView: View {
             params.isDistinct = true
             params.userIds = ["alok_roro_123", "adarsh_roro_123"]
             
+            
             GroupChannel.createChannel(params: params) { channel, error in
                 guard error == nil else {
-                    print("some wrong with  creating channel \(error?.localizedDescription)")
+                    print("some wrong with  creating channel \(String(describing: error?.localizedDescription))")
                     return
                 }
                 guard let channel = channel else {
@@ -60,7 +58,6 @@ struct ContentView: View {
                     }
                     print("message sent \(message.message)")
                 }
-                
                 
                 let mparams = MessageListParams()
                 mparams.reverse = false
@@ -78,7 +75,7 @@ struct ContentView: View {
                             // Handle error.
                             return
                         }
-                        print("loadNext mesasge count \(messages?.count)")
+                        print("loadNext mesasge count \(String(describing: messages?.count))")
                         // Add messages to your data source.
                     }
                 }
@@ -90,10 +87,64 @@ struct ContentView: View {
                             return
                         }
                         // Add messages to your data source.
-                        print("loadPrevious mesasge count \(messages?.count)")
+                        print("loadPrevious mesasge count \(String(describing: messages?.count))")
                     }
                     
                     
+                }
+                
+                let qParams = GroupChannelListQueryParams()
+                qParams.includeEmptyChannel = false
+                qParams.order = .chronological
+                let query = GroupChannel.createMyGroupChannelListQuery(params: qParams)
+                let collection1 = SendbirdChat.createGroupChannelCollection(query: query)
+                // Call hasNext first to check if there are more channels to load.
+                if collection1?.hasNext == true {
+                    collection1?.loadMore(completionHandler: { channels, error in
+                        guard error == nil else {
+                            // Handle error.
+                            return
+                        }
+                        print("channels--- \(String(describing: channels))")
+                        var index = 0
+                        if let channelsList = channels {
+                            while index < channelsList.count {
+                                let channel = channelsList[index]
+                                print("channels---channel--\(channel.name) \(channel.members)")
+                                var index1 = 0
+                                    while index1 < channel.members.count {
+                                        print("channels---channel---member---\(channel.members[index1].nickname) \(String(describing: channel.members[index1].profileURL)) \(channel.members[index1].userId)")
+                                        index1 += 1
+                                    }
+                                let params = MessageListParams()
+                                params.previousResultSize = 100
+                              //  params.nextResultSize = 0
+                                params.replyType = .all
+                                params.includeThreadInfo = true
+                                let timestamp = Date().timeIntervalSince1970 * 1000
+                                channel.getMessagesByTimestamp(Int64(timestamp), params: params) { messages, error in
+                                    guard error == nil else {
+                                        // Handle error.
+                                        return
+                                    }
+                                    var indexMessage = 0
+                                    if let messagesArray = messages {
+                                        while indexMessage < messagesArray.count {
+                                            print("channels---channel---message \(indexMessage)---\(messagesArray[indexMessage].message)")
+                                            indexMessage += 1
+                                        }
+                                    }
+                                    // A list of previous and next messages of a specified timestamp is successfully retrieved.
+                                    // Through the messages parameter of the callback handler,
+                                    // you can access and display the data of each message from the result list
+                                    // that the Sendbird server has passed to the callback method.
+                                }
+                                print("channels---channel2--\(String(describing: channel.lastMessage?.message))")
+                                index += 1
+                            }
+                        }
+                        // Add channels to your data source.
+                    })
                 }
             }
         } label: {
