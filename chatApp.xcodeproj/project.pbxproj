@@ -14,6 +14,7 @@
 		29D2F97E2AB06875004B8CE3 /* chatAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D2F97D2AB06875004B8CE3 /* chatAppTests.swift */; };
 		29D2F9882AB06875004B8CE3 /* chatAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D2F9872AB06875004B8CE3 /* chatAppUITests.swift */; };
 		29D2F98A2AB06875004B8CE3 /* chatAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D2F9892AB06875004B8CE3 /* chatAppUITestsLaunchTests.swift */; };
+		29D2F9982AB0689F004B8CE3 /* SendbirdChatSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 29D2F9972AB0689F004B8CE3 /* SendbirdChatSDK */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29D2F9982AB0689F004B8CE3 /* SendbirdChatSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +145,9 @@
 			dependencies = (
 			);
 			name = chatApp;
+			packageProductDependencies = (
+				29D2F9972AB0689F004B8CE3 /* SendbirdChatSDK */,
+			);
 			productName = chatApp;
 			productReference = 29D2F9692AB06872004B8CE3 /* chatApp.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +220,9 @@
 				Base,
 			);
 			mainGroup = 29D2F9602AB06872004B8CE3;
+			packageReferences = (
+				29D2F9962AB0689F004B8CE3 /* XCRemoteSwiftPackageReference "sendbird-chat-sdk-ios" */,
+			);
 			productRefGroup = 29D2F96A2AB06872004B8CE3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -583,6 +591,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		29D2F9962AB0689F004B8CE3 /* XCRemoteSwiftPackageReference "sendbird-chat-sdk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sendbird/sendbird-chat-sdk-ios";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		29D2F9972AB0689F004B8CE3 /* SendbirdChatSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 29D2F9962AB0689F004B8CE3 /* XCRemoteSwiftPackageReference "sendbird-chat-sdk-ios" */;
+			productName = SendbirdChatSDK;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 29D2F9612AB06872004B8CE3 /* Project object */;
 }
